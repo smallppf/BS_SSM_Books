@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.small.dao.BookDao">
+
+    <insert id="addBook" parameterType="BookBean">
+        insert into book(card, name, type, autho, press, num, address)
+        values (#{card}, #{name}, #{type}, #{autho}, #{press}, #{num}, #{address})
+    </insert>
+
+    <select id="get_ListInfo" resultType="BookBean">
+        select *
+        from book
+    </select>
+
+    <select id="get_HistoryListInfo" resultType="HistoryBean">
+        select *
+        from history
+        where aid = #{aid}
+          and status = #{status}
+    </select>
+
+    <select id="get_HistoryListInfo2" resultType="HistoryBean">
+        select *
+        from history
+        where status = #{status}
+    </select>
+
+    <select id="get_BookInfo" resultType="BookBean">
+        select *
+        from book
+        where bid = #{bid}
+    </select>
+
+    <update id="updateBook" parameterType="BookBean">
+        update book
+        set name=#{name},
+            card=#{card},
+            type=#{type},
+            autho=#{autho},
+            press=#{press},
+            num=#{num},
+            address=#{address}
+        where bid = #{bid}
+    </update>
+
+    <delete id="deleteBook">
+        delete
+        from book
+        where bid = #{bid}
+    </delete>
+
+    <select id="getLikeList" resultType="BookBean">
+        select *
+        from book
+        where name like #{name}
+    </select>
+
+    <insert id="borrowBook" parameterType="HistoryBean">
+        insert into history(aid, bid, card, bookname, adminname, username, begintime, endtime, status)
+        values (#{aid}, #{bid}, #{card}, #{bookname}, #{adminname}, #{username}, #{begintime}, #{endtime}, #{status})
+    </insert>
+
+    <update id="borrowBook2">
+        update history
+        set endtime=#{endtime},
+            status=#{status}
+        where hid = #{hid}
+    </update>
+
+
+    <select id="findByType" resultType="BookBean">
+        select *
+        from book
+        where type = #{type}
+    </select>
+
+
+</mapper>

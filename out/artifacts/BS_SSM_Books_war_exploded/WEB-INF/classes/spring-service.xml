@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- 1、扫描service下的包 -->
+    <context:component-scan base-package="com.small.service"/>
+
+    <!-- 2、将ServiceImpl注入到IOC容器中-->
+    <bean id="adminServiceImpl" class="com.small.service.impl.AdminServiceImpl">
+        <property name="adminDao" ref="adminDao"/>
+    </bean>
+
+    <bean id="typeServiceImpl" class="com.small.service.impl.TypeServiceImpl">
+        <property name="typeDao" ref="typeDao"/>
+    </bean>
+
+    <bean id="bookServiceImpl" class="com.small.service.impl.BookServiceImpl">
+        <property name="bookDao" ref="bookDao"/>
+    </bean>
+
+    <bean id="collectionService" class="com.small.service.impl.CollectionServiceImpl">
+        <property name="collectionDao" ref="collectionDao"/>
+        <property name="bookDao" ref="bookDao"/>
+        <property name="typeDao" ref="typeDao"/>
+    </bean>
+
+    <!-- 3、配置事务管理器 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <!-- 注入数据库连接池 -->
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+
+</beans>

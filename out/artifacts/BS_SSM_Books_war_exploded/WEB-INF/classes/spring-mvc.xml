@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- 1、注解驱动 -->
+    <mvc:annotation-driven/>
+    <!-- 2、静态资源过滤 -->
+    <mvc:default-servlet-handler/>
+    <!-- 3、扫描包:controller -->
+    <context:component-scan base-package="com.small.controller"/>
+    <!-- 4、视图解析器 -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!-- 配置拦截器 -->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/index"/><!-- 登录页面  不会拦截的 -->
+            <mvc:exclude-mapping path="/LoginServlet"/><!-- 登录功能  不会拦截的 -->
+            <mvc:exclude-mapping path="/register"/><!-- 注册功能  不会拦截的 -->
+            <mvc:exclude-mapping path="/RegisterServlet"/><!-- 注册功能  不会拦截的 -->
+            <bean class="com.small.interceptor.MyInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- 设置上传文件的最大值  以字节为单位-->
+        <property name="maxUploadSize" value="10240000"/>
+        <property name="defaultEncoding" value="UTF-8"/>
+    </bean>
+
+    <!-- 静态资源过滤 -->
+    <mvc:resources mapping="/static/**" location="/static/"></mvc:resources>
+
+
+</beans>
